@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ONE PLACE FOR JEE SYLLABUS</title>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --c-red: #D32F2F;
+            --c-black: #050505;
+            --c-dark-grey: #121212;
+            --c-light-grey: #1f1f1f;
+            --c-white: #FFFFFF;
+            --c-silver: #C0C0C0;
+            --c-golden: #FFD700;
+            --c-green: #2E7D32;
+            --c-blue: #1565C0;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
+
+        body {
+            background-color: var(--c-black);
+            color: var(--c-white);
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* --- Animations --- */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-in { animation: fadeIn 0.8s ease-out forwards; }
+
+        @keyframes shine {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* --- Global Button Styles --- */
+        .shine-btn {
+            position: relative; z-index: 1; overflow: hidden; transition: 0.3s;
+            box-shadow: 0 0 5px rgba(211, 47, 47, 0.4);
+            font-weight: bold; text-transform: uppercase; letter-spacing: 0.5px;
+        }
+        .shine-btn::before {
+            content: ''; position: absolute; top: -2px; left: -2px; right: -2px; bottom: -2px;
+            background: linear-gradient(45deg, var(--c-red), var(--c-golden), var(--c-red), var(--c-blue));
+            background-size: 400%; z-index: -1; animation: shine 4s linear infinite;
+            border-radius: inherit; opacity: 0; transition: opacity 0.3s;
+        }
+        .shine-btn:hover::before { opacity: 1; }
+        .shine-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px rgba(211, 47, 47, 0.6); }
+
+        /* --- Header --- */
+        header {
+            background: linear-gradient(180deg, rgba(0,0,0,1) 0%, rgba(18,18,18,0.95) 100%);
+            padding: 15px 30px; display: flex; justify-content: space-between; align-items: center;
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            border-bottom: 2px solid var(--c-red); box-shadow: 0 2px 20px rgba(0,0,0,0.8);
+        }
+        .logo { font-size: 1.6rem; font-weight: 800; color: var(--c-white); text-transform: uppercase; letter-spacing: 1px; text-shadow: 0 0 10px var(--c-red); }
+        .logo span { color: var(--c-red); }
+
+        nav button {
+            background: transparent; border: none; color: var(--c-silver); font-size: 1rem;
+            margin-left: 15px; cursor: pointer; transition: 0.3s; padding: 8px 12px; border-radius: 4px;
+        }
+        nav button:hover { color: var(--c-white); text-shadow: 0 0 5px var(--c-white); }
+        .btn-login { background-color: var(--c-blue); color: white; padding: 8px 20px; }
+        .btn-admin { color: var(--c-golden); border: 1px solid var(--c-golden); display: none; }
+
+        /* --- Sections --- */
+        .section { display: none; padding-top: 80px; min-height: 100vh; padding-bottom: 60px; }
+        .section.active { display: block; }
+
+        /* --- Hero Section --- */
+        #home-page { padding-top: 0; }
+        .hero {
+            height: 100vh; position: relative; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center; overflow: hidden;
+            border-bottom: 3px solid var(--c-red);
+        }
+        .hero-bg {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center; z-index: -1;
+            filter: brightness(0.25) blur(3px); transition: background-image 1.5s ease-in-out;
+        }
+        .hero-content {
+            z-index: 2; padding: 20px; background: rgba(0,0,0,0.4);
+            backdrop-filter: blur(2px); border-radius: 20px; border: 1px solid rgba(255,255,255,0.1);
+        }
+        .hero h1 { font-size: 4rem; color: var(--c-white); text-shadow: 4px 4px 0px var(--c-red); margin-bottom: 15px; line-height: 1.1; }
+        .hero p { font-size: 1.3rem; color: var(--c-silver); max-width: 700px; margin: 0 auto 30px auto; }
+        .hero-btn { padding: 15px 40px; background-color: var(--c-red); color: white; border: none; font-size: 1.3rem; cursor: pointer; border-radius: 50px; }
+
+        /* --- Container & Titles --- */
+        .container { padding: 40px 20px; max-width: 1400px; margin: 0 auto; }
+        .main-title {
+            text-align: center; font-size: 2.5rem; color: var(--c-white); margin-bottom: 30px;
+            text-transform: uppercase; letter-spacing: 2px;
+        }
+
+        /* --- SLIDING TAB NAVIGATION --- */
+        .tabs-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            border-bottom: 2px solid #333;
+            margin-bottom: 40px;
+            width: fit-content;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
+        .tab-btn {
+            background: transparent;
+            border: none;
+            color: var(--c-silver);
+            font-size: 1.2rem;
+            font-weight: bold;
+            padding: 15px 35px;
+            cursor: pointer;
+            position: relative;
+            transition: color 0.3s;
+            text-transform: uppercase;
+            z-index: 2;
+        }
+        
+        .tab-btn:hover { color: white; }
+        .tab-btn.active { color: var(--c-white); text-shadow: 0 0 15px var(--c-red); }
+        
+        /* The sliding line effect */
+        .slider-line {
+            position: absolute;
+            bottom: -2px; 
+            left: 0;
+            height: 4px;
+            background-color: var(--c-red);
+            box-shadow: 0 -4px 15px var(--c-red);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            width: 0;
+            z-index: 3;
+            border-radius: 2px;
+        }
+
+        /* Tab Content Zones */
+        .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
+        .tab-content.active { display: grid; }
+
+        /* --- VIDEO GRID & ENHANCED CARDS --- */
+        .video-grid {
+            /* Large cards layout */
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
+            gap: 40px;
+        }
+
+        .video-card {
+            background-color: var(--c-light-grey);
+            border-radius: 15px; 
+            overflow: hidden; 
+            border: 2px solid #333;
+            transition: all 0.4s ease; 
+            position: relative;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+        }
+
+        /* HOVER EFFECT: Border Glow */
+        .video-card:hover { 
+            transform: translateY(-10px) scale(1.02); 
+            border-color: var(--c-red); 
+            box-shadow: 0 0 25px rgba(211, 47, 47, 0.5), inset 0 0 10px rgba(211,47,47,0.1); 
+        }
+
+        .thumbnail-container { position: relative; width: 100%; height: 210px; overflow: hidden; }
+        .thumbnail { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .video-card:hover .thumbnail { transform: scale(1.15); }
+        
+        .play-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;
+            opacity: 0; transition: 0.3s; cursor: pointer;
+            backdrop-filter: blur(2px);
+        }
+        .video-card:hover .play-overlay { opacity: 1; }
+        .play-overlay i { font-size: 4rem; color: var(--c-white); text-shadow: 0 0 20px var(--c-red); }
+        
+        .card-body { padding: 20px; }
+        .card-title { 
+            font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; 
+            color: var(--c-white); height: 50px; overflow: hidden; 
+            line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
+        }
+        
+        .card-actions { display: flex; gap: 15px; }
+        .btn-card {
+            flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer;
+            font-size: 1rem; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .btn-watch { background-color: var(--c-red); }
+        .btn-notes { background-color: var(--c-green); }
+
+        /* --- Admin Panel --- */
+        .admin-layout { display: flex; flex-direction: column; gap: 40px; }
+        .admin-form {
+            background-color: var(--c-dark-grey); padding: 40px; border-radius: 15px;
+            border: 1px solid var(--c-golden); max-width: 600px; margin: 0 auto;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+        }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; color: var(--c-silver); font-weight: bold; }
+        .form-group input, .form-group select {
+            width: 100%; padding: 14px; border-radius: 8px; border: 1px solid #444;
+            background: var(--c-black); color: white; outline: none; transition: 0.3s;
+        }
+        .form-group input:focus, .form-group select:focus { border-color: var(--c-red); box-shadow: 0 0 8px rgba(211,47,47,0.4); }
+        
+        .admin-list-container { background-color: var(--c-dark-grey); padding: 30px; border-radius: 15px; border: 1px solid #333; }
+        .admin-video-item {
+            display: flex; justify-content: space-between; align-items: center;
+            background: var(--c-black); padding: 15px; margin-bottom: 12px;
+            border-radius: 8px; border-left: 4px solid var(--c-red); transition: 0.2s;
+        }
+        .admin-video-item:hover { background: #1a1a1a; }
+        .admin-actions button { margin-left: 8px; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
+
+        /* --- Footer --- */
+        footer { background-color: var(--c-black); border-top: 1px solid #333; padding: 30px; text-align: center; margin-top: auto; }
+        footer p { color: var(--c-silver); font-size: 1.1rem; letter-spacing: 1px; }
+        footer a { color: var(--c-red); font-weight: bold; text-decoration: none; transition: 0.3s; position: relative; }
+        footer a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: var(--c-golden); transition: width 0.3s; }
+        footer a:hover::after { width: 100%; }
+        footer a:hover { color: var(--c-golden); text-shadow: 0 0 10px var(--c-golden); }
+
+        /* --- Auth Page --- */
+        .auth-container {
+            background: linear-gradient(145deg, #151515, #000000); padding: 50px; border-radius: 20px;
+            max-width: 450px; margin: 50px auto; border-top: 4px solid var(--c-red);
+            box-shadow: 0 0 30px rgba(0,0,0,0.8); text-align: center;
+        }
+        .auth-tabs { display: flex; margin-bottom: 30px; border-bottom: 2px solid #333; }
+        .auth-tab { flex: 1; padding: 15px; cursor: pointer; color: var(--c-silver); font-weight: bold; font-size: 1.1rem; transition: 0.3s; }
+        .auth-tab.active { color: var(--c-red); border-bottom: 3px solid var(--c-red); background: rgba(211,47,47,0.05); }
+        .auth-form { display: none; }
+        .auth-form.active { display: block; animation: fadeIn 0.5s; }
+
+        /* --- Modal --- */
+        .video-modal {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center;
+            align-items: center; flex-direction: column; backdrop-filter: blur(5px);
+        }
+        .video-modal.show { display: flex; }
+        .video-wrapper {
+            width: 85%; max-width: 1000px; aspect-ratio: 16/9; background: black;
+            border: 2px solid var(--c-red); box-shadow: 0 0 30px rgba(211, 47, 47, 0.4);
+            border-radius: 10px; overflow: hidden;
+        }
+        .close-modal { margin-bottom: 15px; color: white; font-size: 2.5rem; cursor: pointer; align-self: flex-end; margin-right: 8%; transition: 0.3s; }
+        .close-modal:hover { color: var(--c-red); transform: rotate(90deg); }
+
+        @media(max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .main-title { font-size: 1.8rem; }
+            .card-actions { flex-direction: row; }
+            .tabs-container { overflow-x: auto; white-space: nowrap; justify-content: flex-start; width: 100%; }
+            .video-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header>
+        <div class="logo">JEE <span>SYLLABUS</span></div>
+        <nav>
+            <button onclick="router('home')"><i class="fas fa-home"></i> Home</button>
+            <button onclick="router('videos')"><i class="fas fa-video"></i> Videos</button>
+            <button id="nav-admin" class="btn-admin shine-btn" onclick="router('admin')"><i class="fas fa-lock"></i> Admin</button>
+            <button id="nav-login" class="btn-login shine-btn" onclick="router('login')">Login</button>
+            <button id="nav-logout" class="btn-login shine-btn" style="display:none; background-color: var(--c-red);" onclick="handleLogout()">Logout</button>
+        </nav>
+    </header>
+
+    <!-- Home Page -->
+    <section id="home-page" class="section">
+        <div class="hero">
+            <div class="hero-bg" id="hero-bg"></div>
+            <div class="hero-content animate-in">
+                <h1>ONE PLACE FOR <br>JEE SYLLABUS</h1>
+                <p>Comprehensive video lectures and notes for Physics, Chemistry, and Maths.</p>
+                <button class="hero-btn shine-btn" onclick="router('videos')">Start Learning Now</button>
+            </div>
+        </div>
+
+        <div class="container animate-in">
+            <h2 class="main-title">YOUR JEE SYLLABUS VIDEOS</h2>
+            
+            <!-- Context: 'home' -->
+            <div class="tabs-container" id="home-tabs-container">
+                <button class="tab-btn active" onclick="switchTab('home', 'All', this)">All</button>
+                <button class="tab-btn" onclick="switchTab('home', 'Physics', this)">Physics</button>
+                <button class="tab-btn" onclick="switchTab('home', 'Chemistry', this)">Chemistry</button>
+                <button class="tab-btn" onclick="switchTab('home', 'Maths', this)">Maths</button>
+                <div class="slider-line" id="home-slider"></div>
+            </div>
+
+            <!-- IDs must match: home-all, home-physics, etc. -->
+            <div id="home-all" class="video-grid tab-content active"></div>
+            <div id="home-physics" class="video-grid tab-content"></div>
+            <div id="home-chemistry" class="video-grid tab-content"></div>
+            <div id="home-maths" class="video-grid tab-content"></div>
+        </div>
+        
+        <footer>
+            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
+        </footer>
+    </section>
+
+    <!-- All Videos Page -->
+    <section id="videos-page" class="section">
+        <div class="container animate-in">
+            <h2 class="main-title">TOTAL VIDEOS REPOSITORY</h2>
+            
+            <!-- Context: 'all'. ID fixed to 'all-tabs-container' to match function call -->
+            <div class="tabs-container" id="all-tabs-container">
+                <button class="tab-btn active" onclick="switchTab('all', 'All', this)">All</button>
+                <button class="tab-btn" onclick="switchTab('all', 'Physics', this)">Physics</button>
+                <button class="tab-btn" onclick="switchTab('all', 'Chemistry', this)">Chemistry</button>
+                <button class="tab-btn" onclick="switchTab('all', 'Maths', this)">Maths</button>
+                <div class="slider-line" id="all-slider"></div>
+            </div>
+
+            <!-- IDs must match: all-all, all-physics, etc. -->
+            <div id="all-all" class="video-grid tab-content active"></div>
+            <div id="all-physics" class="video-grid tab-content"></div>
+            <div id="all-chemistry" class="video-grid tab-content"></div>
+            <div id="all-maths" class="video-grid tab-content"></div>
+        </div>
+        <footer>
+            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
+        </footer>
+    </section>
+
+    <!-- Admin Panel -->
+    <section id="admin-page" class="section">
+        <div class="container admin-layout animate-in">
+            <div class="admin-form">
+                <h2 style="color:var(--c-golden); text-align:center; margin-bottom:20px; text-transform: uppercase;">
+                    <i class="fas fa-cloud-upload-alt"></i> <span id="form-mode-title">Upload Content</span>
+                </h2>
+                <input type="hidden" id="edit-key">
+                <div class="form-group">
+                    <label>Select Subject</label>
+                    <select id="admin-subject">
+                        <option value="Physics">Physics</option>
+                        <option value="Chemistry">Chemistry</option>
+                        <option value="Maths">Maths</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Video Title</label>
+                    <input type="text" id="admin-title" placeholder="Enter video title">
+                </div>
+                <div class="form-group">
+                    <label>YouTube Video Link</label>
+                    <input type="text" id="admin-link" placeholder="e.g. https://youtu.be/...">
+                </div>
+                <div class="form-group">
+                    <label>Notes Link (Optional)</label>
+                    <input type="text" id="admin-notes" placeholder="e.g. Google Drive PDF Link">
+                </div>
+                <button id="btn-save" class="btn-submit shine-btn" style="width:100%; padding:15px; background:var(--c-golden); border:none; border-radius:8px; font-weight:bold; cursor:pointer;" onclick="saveVideo()">UPLOAD VIDEO</button>
+                <button id="btn-cancel" style="width:100%; padding:10px; background:#444; border:none; border-radius:8px; color:white; margin-top:10px; display:none; cursor:pointer;" onclick="resetAdminForm()">Cancel Edit</button>
+            </div>
+
+            <div class="admin-list-container">
+                <h3 style="color:var(--c-silver); margin-bottom:20px; border-bottom:1px solid #444; padding-bottom:10px;">
+                    <i class="fas fa-tasks"></i> Manage Existing Videos
+                </h3>
+                <div id="admin-video-list"></div>
+            </div>
+        </div>
+        <footer>
+            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
+        </footer>
+    </section>
+
+    <!-- Auth Page -->
+    <section id="login-page" class="section">
+        <div class="auth-container animate-in">
+            <h2 style="color:white; margin-bottom:20px;">ACCESS DASHBOARD</h2>
+            <div class="auth-tabs">
+                <div class="auth-tab active" id="tab-login" onclick="switchAuth('login')">LOGIN</div>
+                <div class="auth-tab" id="tab-signup" onclick="switchAuth('signup')">SIGN UP</div>
+            </div>
+            <div id="form-login" class="auth-form active">
+                <div class="form-group">
+                    <label style="text-align:left;">Email Address</label>
+                    <input type="email" id="login-email" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label style="text-align:left;">Password</label>
+                    <input type="password" id="login-password" placeholder="********">
+                </div>
+                <button class="shine-btn" style="width:100%; padding:12px; background:var(--c-blue); color:white; border:none; border-radius:5px; margin-top:10px; cursor:pointer;" onclick="handleLogin()">SECURE LOGIN</button>
+            </div>
+            <div id="form-signup" class="auth-form">
+                <div class="form-group">
+                    <label style="text-align:left;">Email Address</label>
+                    <input type="email" id="signup-email" placeholder="email@example.com">
+                </div>
+                <div class="form-group">
+                    <label style="text-align:left;">Create Password</label>
+                    <input type="password" id="signup-password" placeholder="Create Password">
+                </div>
+                <button class="shine-btn" style="width:100%; padding:12px; background:var(--c-red); color:white; border:none; border-radius:5px; margin-top:10px; cursor:pointer;" onclick="handleSignup()">CREATE ACCOUNT</button>
+            </div>
+            <p id="auth-error" style="color: var(--c-red); margin-top: 20px; font-weight:bold; min-height:20px;"></p>
+        </div>
+        <footer>
+            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
+        </footer>
+    </section>
+
+    <!-- Modal -->
+    <div class="video-modal" id="video-modal">
+        <div class="close-modal" onclick="closeModal()">&times;</div>
+        <div class="video-wrapper">
+            <iframe id="video-frame" width="100%" height="100%" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- Firebase Logic -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-app.js";
+        import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-auth.js";
+        import { getDatabase, ref, push, set, update, remove, onValue } from "https://www.gstatic.com/firebasejs/9.22.0/firebase-database.js";
+
+        const firebaseConfig = {
+            apiKey: "AIzaSyAaY6wBjg4ooOqg841Dr5Nd2bZmlDIzJYU",
+            authDomain: "namaste-2bfcc.firebaseapp.com",
+            databaseURL: "https://namaste-2bfcc-default-rtdb.firebaseio.com",
+            projectId: "namaste-2bfcc",
+            storageBucket: "namaste-2bfcc.firebasestorage.app",
+            messagingSenderId: "721784358614",
+            appId: "1:721784358614:web:686a564d8e965694296b77"
+        };
+
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+        const db = getDatabase(app);
+
+        let currentUser = null;
+        let allVideosData = [];
+        let isFirstLoad = true;
+
+        // --- Tabs Logic (With Sliding Effect) ---
+        window.switchTab = (context, subject, btn) => {
+            // context = 'home' OR 'all'
+            // subject = 'All', 'Physics', 'Chemistry', 'Maths'
+            const container = document.getElementById(`${context}-tabs-container`);
+            
+            // Safety check
+            if(!container) {
+                console.error(`Tab container not found for context: ${context}`);
+                return;
+            }
+
+            const slider = document.getElementById(`${context}-slider`);
+            
+            // Remove active class from all buttons in this container
+            container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+            
+            // Add active class to clicked button
+            btn.classList.add('active');
+
+            // Move Slider
+            if(slider) {
+                slider.style.width = `${btn.offsetWidth}px`;
+                slider.style.left = `${btn.offsetLeft}px`;
+            }
+
+            // --- FILTERING LOGIC ---
+            // 1. Hide all 4 potential grids for this context
+            const grids = ['all', 'physics', 'chemistry', 'maths'];
+            grids.forEach(g => {
+                const el = document.getElementById(`${context}-${g}`);
+                if(el) el.classList.remove('active');
+            });
+
+            // 2. Show the selected specific grid
+            // e.g., id="all-physics" or "home-all"
+            const targetId = `${context}-${subject.toLowerCase()}`;
+            const targetGrid = document.getElementById(targetId);
+            if(targetGrid) {
+                targetGrid.classList.add('active');
+            } else {
+                console.error(`Target grid not found: ${targetId}`);
+            }
+        };
+
+        // Initialize sliders position
+        function initTabs() {
+            ['home', 'all'].forEach(ctx => {
+                const container = document.getElementById(`${ctx}-tabs-container`);
+                if(container){
+                    const btn = container.querySelector('.tab-btn.active');
+                    const slider = document.getElementById(`${ctx}-slider`);
+                    if(btn && slider && btn.offsetWidth > 0) {
+                        slider.style.width = `${btn.offsetWidth}px`;
+                        slider.style.left = `${btn.offsetLeft}px`;
+                    }
+                }
+            });
+        }
+        window.addEventListener('resize', initTabs);
+
+        // --- Auth Logic ---
+        onAuthStateChanged(auth, (user) => {
+            currentUser = user;
+            const navLogin = document.getElementById('nav-login');
+            const navLogout = document.getElementById('nav-logout');
+            const navAdmin = document.getElementById('nav-admin');
+
+            if (user) {
+                navLogin.style.display = 'none';
+                navLogout.style.display = 'inline-block';
+                if (user.email === 'thepremanshu@gmail.com') {
+                    navAdmin.style.display = 'inline-block';
+                } else {
+                    navAdmin.style.display = 'none';
+                }
+            } else {
+                navLogin.style.display = 'inline-block';
+                navLogout.style.display = 'none';
+                navAdmin.style.display = 'none';
+            }
+
+            if (isFirstLoad) {
+                const lastPage = localStorage.getItem('lastPage') || 'home';
+                if (lastPage === 'admin' && (!user || user.email !== 'thepremanshu@gmail.com')) {
+                    router('home');
+                } else if (lastPage === 'login' && user) {
+                    router('home');
+                } else {
+                    router(lastPage);
+                }
+                isFirstLoad = false;
+                setTimeout(initTabs, 500); 
+            }
+        });
+
+        window.switchAuth = (mode) => {
+            document.getElementById('auth-error').innerText = "";
+            document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.auth-form').forEach(f => f.classList.remove('active'));
+            document.getElementById(`tab-${mode}`).classList.add('active');
+            document.getElementById(`form-${mode}`).classList.add('active');
+        }
+
+        window.handleLogin = () => {
+            const email = document.getElementById('login-email').value;
+            const pass = document.getElementById('login-password').value;
+            signInWithEmailAndPassword(auth, email, pass)
+                .then(() => {
+                    document.getElementById('login-email').value = "";
+                    document.getElementById('login-password').value = "";
+                    router('home');
+                })
+                .catch(err => document.getElementById('auth-error').innerText = err.message);
+        };
+
+        window.handleSignup = () => {
+            const email = document.getElementById('signup-email').value;
+            const pass = document.getElementById('signup-password').value;
+            createUserWithEmailAndPassword(auth, email, pass)
+                .then(() => {
+                    document.getElementById('signup-email').value = "";
+                    document.getElementById('signup-password').value = "";
+                    alert("Account Created Successfully!");
+                    router('home');
+                })
+                .catch(err => document.getElementById('auth-error').innerText = err.message);
+        };
+
+        window.handleLogout = () => {
+            if(confirm("Are you sure you want to logout?")) {
+                signOut(auth).then(() => router('home'));
+            }
+        };
+
+        // --- Admin Logic ---
+        function getYouTubeID(url) {
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
+        window.saveVideo = () => {
+            if(!currentUser || currentUser.email !== 'thepremanshu@gmail.com') return;
+
+            const subject = document.getElementById('admin-subject').value;
+            const title = document.getElementById('admin-title').value;
+            const link = document.getElementById('admin-link').value;
+            const notes = document.getElementById('admin-notes').value;
+            const editKey = document.getElementById('edit-key').value;
+
+            if(!title || !link) { alert("Please fill Title and Video Link"); return; }
+            const videoId = getYouTubeID(link);
+            if(!videoId) { alert("Invalid YouTube Link"); return; }
+
+            const thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
+            const videoData = {
+                subject: subject, title: title, videoId: videoId,
+                thumbnail: thumbUrl, notesUrl: notes || "", timestamp: Date.now()
+            };
+
+            const actionName = editKey ? "Update" : "Upload";
+            if(!confirm(`Confirm ${actionName} for: ${title} in ${subject}?`)) return;
+
+            if (editKey) {
+                update(ref(db, 'videos/' + editKey), videoData)
+                    .then(() => { alert("Video Updated!"); resetAdminForm(); })
+                    .catch(err => alert(err.message));
+            } else {
+                push(ref(db, 'videos'), videoData)
+                    .then(() => { alert("Video Uploaded!"); resetAdminForm(); })
+                    .catch(err => alert(err.message));
+            }
+        };
+
+        window.editVideo = (key) => {
+            const vid = allVideosData.find(v => v.key === key);
+            if (!vid) return;
+            document.getElementById('edit-key').value = key;
+            document.getElementById('admin-subject').value = vid.subject || "Physics";
+            document.getElementById('admin-title').value = vid.title;
+            document.getElementById('admin-link').value = `https://youtu.be/${vid.videoId}`;
+            document.getElementById('admin-notes').value = vid.notesUrl;
+            document.getElementById('form-mode-title').innerText = "Edit Video";
+            document.getElementById('btn-save').innerText = "UPDATE VIDEO";
+            document.getElementById('btn-cancel').style.display = "block";
+            window.scrollTo(0,0);
+        };
+
+        window.deleteVideo = (key) => {
+            if(confirm("WARNING: Delete this video permanently?")) {
+                remove(ref(db, 'videos/' + key))
+                    .then(() => alert("Video Deleted"))
+                    .catch(err => alert(err.message));
+            }
+        };
+
+        window.resetAdminForm = () => {
+            document.getElementById('edit-key').value = "";
+            document.getElementById('admin-subject').value = "Physics";
+            document.getElementById('admin-title').value = "";
+            document.getElementById('admin-link').value = "";
+            document.getElementById('admin-notes').value = "";
+            document.getElementById('form-mode-title').innerText = "Upload Content";
+            document.getElementById('btn-save').innerText = "UPLOAD VIDEO";
+            document.getElementById('btn-cancel').style.display = "none";
+        };
+
+        // --- Data Fetching ---
+        const videosRef = ref(db, 'videos');
+        onValue(videosRef, (snapshot) => {
+            const data = snapshot.val();
+            const adminList = document.getElementById('admin-video-list');
+            
+            // Clear contents
+            ['home', 'all'].forEach(prefix => {
+                ['all', 'physics', 'chemistry', 'maths'].forEach(sub => {
+                    const el = document.getElementById(`${prefix}-${sub}`);
+                    if(el) el.innerHTML = "";
+                });
+            });
+            adminList.innerHTML = "";
+            allVideosData = [];
+
+            if (data) {
+                Object.keys(data).forEach(key => { allVideosData.push({ key: key, ...data[key] }); });
+                allVideosData.reverse(); // Newest first
+
+                const subjects = { Physics: [], Chemistry: [], Maths: [] };
+                
+                allVideosData.forEach(vid => {
+                    const sub = vid.subject || "Physics";
+                    // Map items to subjects. Using direct key access.
+                    if(subjects[sub]) {
+                        subjects[sub].push(vid);
+                    }
+                    
+                    // Admin Item
+                    adminList.innerHTML += `
+                        <div class="admin-video-item">
+                            <div style="flex:1;">
+                                <span style="color:var(--c-golden); font-size:0.8rem; display:block;">${sub.toUpperCase()}</span>
+                                <span style="color:white; font-weight:bold;">${vid.title}</span>
+                            </div>
+                            <div class="admin-actions">
+                                <button style="background:var(--c-blue)" onclick="editVideo('${vid.key}')"><i class="fas fa-edit"></i></button>
+                                <button style="background:var(--c-red)" onclick="deleteVideo('${vid.key}')"><i class="fas fa-trash"></i></button>
+                            </div>
+                        </div>
+                    `;
+                });
+
+                // Populate 'All' tabs
+                const homeAll = document.getElementById('home-all');
+                const allAll = document.getElementById('all-all');
+                
+                // Videos Page 'All' -> Show everything
+                allVideosData.forEach(v => allAll.innerHTML += createCard(v));
+                
+                // Home Page 'All' -> Show latest 8 mixed
+                allVideosData.slice(0, 8).forEach(v => homeAll.innerHTML += createCard(v));
+
+                // Populate Subject tabs
+                ['Physics', 'Chemistry', 'Maths'].forEach(subName => {
+                    const idName = subName.toLowerCase();
+                    const vids = subjects[subName];
+                    const homeContainer = document.getElementById(`home-${idName}`);
+                    const allContainer = document.getElementById(`all-${idName}`);
+
+                    if(vids.length === 0) {
+                        const empty = `<p style="color:grey; padding:10px;">No videos uploaded yet.</p>`;
+                        homeContainer.innerHTML = empty;
+                        allContainer.innerHTML = empty;
+                    } else {
+                        vids.forEach(v => allContainer.innerHTML += createCard(v));
+                        vids.slice(0, 4).forEach(v => homeContainer.innerHTML += createCard(v));
+                    }
+                });
+                initSlideshow();
+                // Re-initialize tabs to make sure slider is under 'All' correctly
+                setTimeout(initTabs, 100);
+            } else {
+                adminList.innerHTML = "<p style='color:grey'>No content found.</p>";
+            }
+        });
+
+        function createCard(vid) {
+            const safeNotes = vid.notesUrl ? vid.notesUrl.replace(/'/g, "&apos;") : "";
+            return `
+                <div class="video-card">
+                    <div class="thumbnail-container">
+                        <img src="${vid.thumbnail}" class="thumbnail" alt="Thumb">
+                        <div class="play-overlay" onclick="attemptWatch('${vid.videoId}')">
+                            <i class="fas fa-play-circle"></i>
+                        </div>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-title" title="${vid.title}">${vid.title}</div>
+                        <div class="card-actions">
+                            <button class="btn-card btn-watch shine-btn" onclick="attemptWatch('${vid.videoId}')"><i class="fas fa-play"></i> WATCH</button>
+                            <button class="btn-card btn-notes shine-btn" onclick="attemptNotes('${safeNotes}')"><i class="fas fa-file-pdf"></i> NOTES</button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        window.attemptWatch = (videoId) => {
+            if (!currentUser) { if(confirm("Authentication Required. Please Login to Watch.")) router('login'); return; }
+            document.getElementById('video-frame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
+            document.getElementById('video-modal').classList.add('show');
+        };
+
+        window.attemptNotes = (url) => {
+            if (!currentUser) { if(confirm("Authentication Required. Please Login to view Notes.")) router('login'); return; }
+            if (!url || url.trim() === "") { alert("Notes are not currently available for this lecture."); }
+            else { window.open(url, '_blank'); }
+        };
+
+        window.closeModal = () => {
+            document.getElementById('video-frame').src = "";
+            document.getElementById('video-modal').classList.remove('show');
+        };
+
+        let slideIndex = 0;
+        let slideInterval;
+        function initSlideshow() {
+            if (allVideosData.length === 0) return;
+            const heroBg = document.getElementById('hero-bg');
+            if(slideInterval) clearInterval(slideInterval);
+            const changeImage = () => {
+                const vid = allVideosData[slideIndex];
+                if(vid) heroBg.style.backgroundImage = `url('${vid.thumbnail}')`;
+                slideIndex = (slideIndex + 1) % allVideosData.length;
+            };
+            changeImage();
+            slideInterval = setInterval(changeImage, 3500);
+        }
+
+        window.router = (page) => {
+            localStorage.setItem('lastPage', page);
+            if (page === 'admin' && (!currentUser || currentUser.email !== 'thepremanshu@gmail.com')) {
+                alert("Access Denied: Admin privileges required."); router('home'); return;
+            }
+            document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
+            if (page === 'home') document.getElementById('home-page').classList.add('active');
+            if (page === 'videos') {
+                document.getElementById('videos-page').classList.add('active');
+                // Force recalculate tabs because the section just became visible
+                setTimeout(initTabs, 50);
+            }
+            if (page === 'login') document.getElementById('login-page').classList.add('active');
+            if (page === 'admin') document.getElementById('admin-page').classList.add('active');
+            window.scrollTo(0, 0);
+            
+            // Fallback for other pages
+            setTimeout(initTabs, 100);
+        };
+    </script>
+</body>
+</html>
