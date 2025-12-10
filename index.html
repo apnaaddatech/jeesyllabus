@@ -19,6 +19,7 @@
             --c-golden: #FFD700;
             --c-green: #2E7D32;
             --c-blue: #1565C0;
+            --c-warning: #FF5722;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
@@ -43,6 +44,12 @@
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
+        }
+
+        @keyframes pop {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+            100% { transform: scale(1); }
         }
 
         /* --- Global Button Styles --- */
@@ -77,9 +84,11 @@
         nav button:hover { color: var(--c-white); text-shadow: 0 0 5px var(--c-white); }
         .btn-login { background-color: var(--c-blue); color: white; padding: 8px 20px; }
         .btn-admin { color: var(--c-golden); border: 1px solid var(--c-golden); display: none; }
+        
+        .btn-profile { background-color: #333; color: var(--c-golden); border: 1px solid var(--c-golden); padding: 8px 15px; display: none; }
 
         /* --- Sections --- */
-        .section { display: none; padding-top: 80px; min-height: 100vh; padding-bottom: 60px; }
+        .section { display: none; padding-top: 80px; padding-bottom: 60px; flex-grow: 1; }
         .section.active { display: block; }
 
         /* --- Hero Section --- */
@@ -111,102 +120,70 @@
 
         /* --- SLIDING TAB NAVIGATION --- */
         .tabs-container {
-            position: relative;
-            display: flex;
-            justify-content: center;
-            border-bottom: 2px solid #333;
-            margin-bottom: 40px;
-            width: fit-content;
-            margin-left: auto;
-            margin-right: auto;
+            position: relative; display: flex; justify-content: center;
+            border-bottom: 2px solid #333; margin-bottom: 40px;
+            width: fit-content; margin-left: auto; margin-right: auto;
         }
-        
         .tab-btn {
-            background: transparent;
-            border: none;
-            color: var(--c-silver);
-            font-size: 1.2rem;
-            font-weight: bold;
-            padding: 15px 35px;
-            cursor: pointer;
-            position: relative;
-            transition: color 0.3s;
-            text-transform: uppercase;
-            z-index: 2;
+            background: transparent; border: none; color: var(--c-silver);
+            font-size: 1.2rem; font-weight: bold; padding: 15px 35px;
+            cursor: pointer; position: relative; transition: color 0.3s;
+            text-transform: uppercase; z-index: 2;
         }
-        
         .tab-btn:hover { color: white; }
         .tab-btn.active { color: var(--c-white); text-shadow: 0 0 15px var(--c-red); }
-        
-        /* The sliding line effect */
         .slider-line {
-            position: absolute;
-            bottom: -2px; 
-            left: 0;
-            height: 4px;
-            background-color: var(--c-red);
-            box-shadow: 0 -4px 15px var(--c-red);
-            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            width: 0;
-            z-index: 3;
-            border-radius: 2px;
+            position: absolute; bottom: -2px; left: 0; height: 4px;
+            background-color: var(--c-red); box-shadow: 0 -4px 15px var(--c-red);
+            transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); width: 0; z-index: 3; border-radius: 2px;
         }
-
-        /* Tab Content Zones */
         .tab-content { display: none; animation: fadeIn 0.4s ease-in-out; }
         .tab-content.active { display: grid; }
 
-        /* --- VIDEO GRID & ENHANCED CARDS --- */
-        .video-grid {
-            /* Large cards layout */
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); 
-            gap: 40px;
-        }
-
+        /* --- VIDEO GRID --- */
+        .video-grid { grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 40px; }
         .video-card {
-            background-color: var(--c-light-grey);
-            border-radius: 15px; 
-            overflow: hidden; 
-            border: 2px solid #333;
-            transition: all 0.4s ease; 
-            position: relative;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+            background-color: var(--c-light-grey); border-radius: 15px; 
+            overflow: hidden; border: 2px solid #333; transition: all 0.4s ease; 
+            position: relative; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
         }
-
-        /* HOVER EFFECT: Border Glow */
         .video-card:hover { 
-            transform: translateY(-10px) scale(1.02); 
-            border-color: var(--c-red); 
+            transform: translateY(-10px) scale(1.02); border-color: var(--c-red); 
             box-shadow: 0 0 25px rgba(211, 47, 47, 0.5), inset 0 0 10px rgba(211,47,47,0.1); 
         }
-
         .thumbnail-container { position: relative; width: 100%; height: 210px; overflow: hidden; }
         .thumbnail { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .video-card:hover .thumbnail { transform: scale(1.15); }
-        
         .play-overlay {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.6); display: flex; justify-content: center; align-items: center;
-            opacity: 0; transition: 0.3s; cursor: pointer;
-            backdrop-filter: blur(2px);
+            opacity: 0; transition: 0.3s; cursor: pointer; backdrop-filter: blur(2px);
         }
         .video-card:hover .play-overlay { opacity: 1; }
         .play-overlay i { font-size: 4rem; color: var(--c-white); text-shadow: 0 0 20px var(--c-red); }
-        
         .card-body { padding: 20px; }
         .card-title { 
             font-size: 1.1rem; font-weight: 600; margin-bottom: 20px; 
             color: var(--c-white); height: 50px; overflow: hidden; 
             line-height: 1.5; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; 
         }
-        
-        .card-actions { display: flex; gap: 15px; }
+        .card-actions { display: flex; gap: 10px; flex-wrap: wrap; }
         .btn-card {
-            flex: 1; padding: 12px; border: none; border-radius: 8px; cursor: pointer;
-            font-size: 1rem; color: white; display: flex; align-items: center; justify-content: center; gap: 8px;
+            flex: 1; padding: 10px; border: none; border-radius: 8px; cursor: pointer;
+            font-size: 0.9rem; color: white; display: flex; align-items: center; justify-content: center; gap: 5px; white-space: nowrap;
         }
-        .btn-watch { background-color: var(--c-red); }
-        .btn-notes { background-color: var(--c-green); }
+        .btn-watch { background-color: var(--c-red); flex-grow: 2; }
+        .btn-notes { background-color: var(--c-blue); }
+        
+        .btn-check { 
+            background-color: #333; border: 1px solid #555; transition: 0.3s; 
+        }
+        .btn-check:hover { background-color: #444; }
+        .btn-check.completed { 
+            background-color: var(--c-green); border-color: var(--c-green); 
+            box-shadow: 0 0 10px var(--c-green);
+        }
+        .btn-check.completed i { animation: pop 0.3s ease; }
 
         /* --- Admin Panel --- */
         .admin-layout { display: flex; flex-direction: column; gap: 40px; }
@@ -222,7 +199,6 @@
             background: var(--c-black); color: white; outline: none; transition: 0.3s;
         }
         .form-group input:focus, .form-group select:focus { border-color: var(--c-red); box-shadow: 0 0 8px rgba(211,47,47,0.4); }
-        
         .admin-list-container { background-color: var(--c-dark-grey); padding: 30px; border-radius: 15px; border: 1px solid #333; }
         .admin-video-item {
             display: flex; justify-content: space-between; align-items: center;
@@ -232,12 +208,38 @@
         .admin-video-item:hover { background: #1a1a1a; }
         .admin-actions button { margin-left: 8px; padding: 8px 12px; border: none; border-radius: 4px; cursor: pointer; color: white; }
 
+        /* --- About Us Page --- */
+        .about-card {
+            background: var(--c-light-grey); padding: 40px; border-radius: 20px;
+            border: 1px solid #333; box-shadow: 0 0 30px rgba(0,0,0,0.5);
+            max-width: 900px; margin: 0 auto; text-align: center;
+        }
+        .about-card h3 { color: var(--c-golden); margin-bottom: 20px; font-size: 2rem; }
+        .about-text {
+            color: var(--c-silver); font-size: 1.1rem; line-height: 1.8;
+            margin-bottom: 30px; text-align: justify;
+        }
+        .social-row {
+            display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin-top: 30px;
+        }
+        .btn-social {
+            padding: 12px 25px; border-radius: 50px; text-decoration: none; color: white;
+            font-weight: bold; display: flex; align-items: center; gap: 10px;
+            transition: 0.3s; border: none;
+        }
+        .btn-social:hover { transform: translateY(-3px); box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .social-tg { background: #0088cc; }
+        .social-wa { background: #25D366; }
+        .social-em { background: #EA4335; }
+
         /* --- Footer --- */
-        footer { background-color: var(--c-black); border-top: 1px solid #333; padding: 30px; text-align: center; margin-top: auto; }
+        footer { 
+            background-color: var(--c-black); border-top: 1px solid #333; 
+            padding: 30px; text-align: center; margin-top: auto; 
+            width: 100%; z-index: 10;
+        }
         footer p { color: var(--c-silver); font-size: 1.1rem; letter-spacing: 1px; }
-        footer a { color: var(--c-red); font-weight: bold; text-decoration: none; transition: 0.3s; position: relative; }
-        footer a::after { content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0; background-color: var(--c-golden); transition: width 0.3s; }
-        footer a:hover::after { width: 100%; }
+        footer a { color: var(--c-red); font-weight: bold; text-decoration: none; transition: 0.3s; position: relative; cursor: pointer; }
         footer a:hover { color: var(--c-golden); text-shadow: 0 0 10px var(--c-golden); }
 
         /* --- Auth Page --- */
@@ -252,7 +254,7 @@
         .auth-form { display: none; }
         .auth-form.active { display: block; animation: fadeIn 0.5s; }
 
-        /* --- Modal --- */
+        /* --- Modal (Video Player & Profile) --- */
         .video-modal {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: rgba(0,0,0,0.95); z-index: 2000; justify-content: center;
@@ -264,8 +266,143 @@
             border: 2px solid var(--c-red); box-shadow: 0 0 30px rgba(211, 47, 47, 0.4);
             border-radius: 10px; overflow: hidden;
         }
+        
+        /* Profile Modal Specifics */
+        .profile-wrapper {
+            width: 90%; max-width: 650px; height: 85vh; background: var(--c-dark-grey);
+            border: 2px solid var(--c-golden); box-shadow: 0 0 30px rgba(255, 215, 0, 0.2);
+            border-radius: 15px; display: flex; flex-direction: column; 
+            position: relative; overflow: hidden;
+        }
+        .profile-header {
+            border-bottom: 1px solid #333; padding: 20px; background: rgba(0,0,0,0.3);
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .user-email { color: var(--c-white); font-size: 1.2rem; font-weight: bold; }
+        .user-email i { color: var(--c-golden); margin-right: 10px; }
+        .profile-close { font-size: 1.5rem; color: #aaa; cursor: pointer; transition: 0.3s; }
+        .profile-close:hover { color: white; transform: rotate(90deg); }
+
+        /* Profile Tabs & Content */
+        .profile-tabs-container {
+            display: flex; justify-content: space-around; position: relative;
+            background: rgba(0,0,0,0.5); border-bottom: 2px solid #333;
+        }
+        .profile-tab {
+            flex: 1; background: transparent; border: none; color: #777; padding: 15px;
+            font-size: 1rem; font-weight: bold; cursor: pointer; transition: 0.3s;
+            text-transform: uppercase; z-index: 2;
+        }
+        .profile-tab.active { color: white; text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        .profile-slider {
+            position: absolute; bottom: 0; left: 0; height: 3px; background: var(--c-red);
+            width: 50%; transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1); box-shadow: 0 -2px 10px var(--c-red);
+        }
+
+        .profile-content { flex: 1; overflow-y: auto; padding: 20px; position: relative; }
+        .profile-tab-content { display: none; animation: fadeIn 0.4s ease; }
+        .profile-tab-content.active { display: block; }
+
+        .item-list { display: flex; flex-direction: column; gap: 15px; }
+        .profile-item {
+            background: var(--c-black); padding: 10px; border-radius: 8px;
+            display: flex; align-items: center; gap: 15px; border: 1px solid #333;
+            transition: 0.3s;
+        }
+        .profile-item:hover { border-color: var(--c-blue); background: #151515; }
+        .prof-thumb { width: 90px; height: 55px; object-fit: cover; border-radius: 4px; cursor: pointer; }
+        .prof-info { flex: 1; }
+        .prof-title { color: white; font-weight: bold; font-size: 0.95rem; margin-bottom: 3px; cursor: pointer; overflow:hidden; white-space:nowrap; text-overflow:ellipsis; max-width: 200px; }
+        .prof-title:hover { color: var(--c-red); }
+        .prof-meta { color: #666; font-size: 0.75rem; }
+        
+        .prof-actions { display: flex; gap: 10px; }
+        .btn-prof-action {
+            border: none; border-radius: 4px; padding: 6px 12px; font-size: 0.8rem;
+            cursor: pointer; font-weight: bold; transition: 0.3s; display: flex; align-items: center; gap: 5px;
+        }
+        .btn-play-mini { background: var(--c-red); color: white; }
+        .btn-play-mini:hover { background: #b71c1c; }
+        
+        /* FILLED GREEN TICK for Unmark */
+        .btn-mark-mini { background: var(--c-green); color: white; border-radius: 50px; padding: 6px 10px; }
+        .btn-mark-mini:hover { background: #1b5e20; box-shadow: 0 0 8px var(--c-green); }
+
+        .profile-footer {
+            padding: 20px; border-top: 1px solid #333; background: rgba(0,0,0,0.3);
+            text-align: center;
+        }
+        
+        /* LOGOUT ANIMATION (Slide Fill) */
+        .btn-logout-animated {
+            width: 100%; padding: 12px; font-weight: bold; font-size: 1rem;
+            color: var(--c-red); border: 2px solid var(--c-red); background: transparent;
+            border-radius: 8px; cursor: pointer; position: relative; overflow: hidden;
+            transition: color 0.4s; z-index: 1;
+        }
+        .btn-logout-animated::before {
+            content: ''; position: absolute; top: 0; left: 0; width: 0%; height: 100%;
+            background: var(--c-red); z-index: -1; transition: width 0.4s ease-in-out;
+        }
+        .btn-logout-animated:hover::before { width: 100%; }
+        .btn-logout-animated:hover { color: white; box-shadow: 0 0 15px rgba(211,47,47,0.5); }
+
         .close-modal { margin-bottom: 15px; color: white; font-size: 2.5rem; cursor: pointer; align-self: flex-end; margin-right: 8%; transition: 0.3s; }
-        .close-modal:hover { color: var(--c-red); transform: rotate(90deg); }
+
+        /* --- CUSTOM ALERT / CONFIRM SYSTEM --- */
+        .custom-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.7); backdrop-filter: blur(4px); z-index: 9999;
+            justify-content: center; align-items: center;
+        }
+        
+        .custom-box {
+            background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+            width: 90%; max-width: 420px; border-radius: 15px; padding: 30px;
+            text-align: center; position: relative;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.8);
+            border: 1px solid rgba(255,255,255,0.1);
+            transform: scale(0.8); opacity: 0;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        
+        .custom-overlay.open { display: flex; }
+        .custom-overlay.open .custom-box { transform: scale(1); opacity: 1; }
+
+        /* Standard Box Border */
+        .custom-box.info { border-top: 4px solid var(--c-blue); box-shadow: 0 0 25px rgba(21, 101, 192, 0.3); }
+        .custom-box.success { border-top: 4px solid var(--c-green); box-shadow: 0 0 25px rgba(46, 125, 50, 0.3); }
+        
+        /* WARNING / NO NOTES Border Effect */
+        .custom-box.warning { 
+            border: 2px solid var(--c-warning); 
+            box-shadow: 0 0 30px rgba(255, 87, 34, 0.5), inset 0 0 20px rgba(255, 87, 34, 0.1);
+            animation: pulseWarning 2s infinite;
+        }
+        @keyframes pulseWarning {
+            0% { box-shadow: 0 0 20px rgba(255, 87, 34, 0.5); }
+            50% { box-shadow: 0 0 40px rgba(255, 87, 34, 0.8); }
+            100% { box-shadow: 0 0 20px rgba(255, 87, 34, 0.5); }
+        }
+
+        .custom-icon { font-size: 3rem; margin-bottom: 15px; }
+        .custom-box.info .custom-icon { color: var(--c-blue); }
+        .custom-box.warning .custom-icon { color: var(--c-warning); }
+        .custom-box.success .custom-icon { color: var(--c-green); }
+
+        .custom-title { color: white; font-size: 1.5rem; margin-bottom: 10px; font-weight: bold; text-transform: uppercase; }
+        .custom-msg { color: var(--c-silver); font-size: 1rem; margin-bottom: 25px; line-height: 1.5; }
+        
+        .custom-btns { display: flex; gap: 15px; justify-content: center; }
+        .c-btn {
+            padding: 10px 25px; border-radius: 5px; border: none; font-weight: bold; cursor: pointer;
+            text-transform: uppercase; transition: 0.3s;
+        }
+        .c-btn-ok { background: var(--c-red); color: white; box-shadow: 0 0 10px rgba(211,47,47,0.3); }
+        .c-btn-ok:hover { background: #b71c1c; box-shadow: 0 0 20px rgba(211,47,47,0.6); transform: translateY(-2px); }
+        
+        .c-btn-cancel { background: transparent; border: 1px solid #555; color: #aaa; }
+        .c-btn-cancel:hover { border-color: white; color: white; background: #333; }
 
         @media(max-width: 768px) {
             .hero h1 { font-size: 2.5rem; }
@@ -273,6 +410,10 @@
             .card-actions { flex-direction: row; }
             .tabs-container { overflow-x: auto; white-space: nowrap; justify-content: flex-start; width: 100%; }
             .video-grid { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); }
+            .prof-title { max-width: 120px; }
+            .about-card { padding: 20px; }
+            .about-card h3 { font-size: 1.5rem; }
+            .btn-social { width: 100%; justify-content: center; }
         }
     </style>
 </head>
@@ -285,8 +426,14 @@
             <button onclick="router('home')"><i class="fas fa-home"></i> Home</button>
             <button onclick="router('videos')"><i class="fas fa-video"></i> Videos</button>
             <button id="nav-admin" class="btn-admin shine-btn" onclick="router('admin')"><i class="fas fa-lock"></i> Admin</button>
+            
+            <!-- Auth Buttons -->
             <button id="nav-login" class="btn-login shine-btn" onclick="router('login')">Login</button>
-            <button id="nav-logout" class="btn-login shine-btn" style="display:none; background-color: var(--c-red);" onclick="handleLogout()">Logout</button>
+            
+            <!-- Profile Button (Replaces Login) -->
+            <button id="nav-profile" class="btn-profile shine-btn" onclick="openProfileModal()">
+                <i class="fas fa-user-circle"></i> Profile
+            </button>
         </nav>
     </header>
 
@@ -304,7 +451,6 @@
         <div class="container animate-in">
             <h2 class="main-title">YOUR JEE SYLLABUS VIDEOS</h2>
             
-            <!-- Context: 'home' -->
             <div class="tabs-container" id="home-tabs-container">
                 <button class="tab-btn active" onclick="switchTab('home', 'All', this)">All</button>
                 <button class="tab-btn" onclick="switchTab('home', 'Physics', this)">Physics</button>
@@ -313,16 +459,11 @@
                 <div class="slider-line" id="home-slider"></div>
             </div>
 
-            <!-- IDs must match: home-all, home-physics, etc. -->
             <div id="home-all" class="video-grid tab-content active"></div>
             <div id="home-physics" class="video-grid tab-content"></div>
             <div id="home-chemistry" class="video-grid tab-content"></div>
             <div id="home-maths" class="video-grid tab-content"></div>
         </div>
-        
-        <footer>
-            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
-        </footer>
     </section>
 
     <!-- All Videos Page -->
@@ -330,7 +471,6 @@
         <div class="container animate-in">
             <h2 class="main-title">TOTAL VIDEOS REPOSITORY</h2>
             
-            <!-- Context: 'all'. ID fixed to 'all-tabs-container' to match function call -->
             <div class="tabs-container" id="all-tabs-container">
                 <button class="tab-btn active" onclick="switchTab('all', 'All', this)">All</button>
                 <button class="tab-btn" onclick="switchTab('all', 'Physics', this)">Physics</button>
@@ -339,15 +479,11 @@
                 <div class="slider-line" id="all-slider"></div>
             </div>
 
-            <!-- IDs must match: all-all, all-physics, etc. -->
             <div id="all-all" class="video-grid tab-content active"></div>
             <div id="all-physics" class="video-grid tab-content"></div>
             <div id="all-chemistry" class="video-grid tab-content"></div>
             <div id="all-maths" class="video-grid tab-content"></div>
         </div>
-        <footer>
-            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
-        </footer>
     </section>
 
     <!-- Admin Panel -->
@@ -389,9 +525,37 @@
                 <div id="admin-video-list"></div>
             </div>
         </div>
-        <footer>
-            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
-        </footer>
+    </section>
+
+    <!-- About Us Page -->
+    <section id="about-page" class="section">
+        <div class="container animate-in">
+            <div class="about-card">
+                <h3>About APNA ADDA</h3>
+                <div class="about-text">
+                    <p>APNA ADDA is a technology-driven company committed to building smart, simple, and useful digital solutions for everyday life. We primarily focus on creating applications that support students, while also offering tools that benefit people from all walks of life.</p>
+                    <br>
+                    <p>Our apps are designed to make daily tasks easier, improve productivity, and provide practical solutions through modern technology. At APNA ADDA, we believe that technology should be accessible, reliable, and purpose-driven.</p>
+                    <br>
+                    <p>The company was founded and is owned by Premanshu Kumar, a passionate developer focused on creating meaningful digital products that solve real-world problems. This official website of APNA ADDA represents our mission, our products, and our commitment to quality and innovation.</p>
+                    <br>
+                    <p>We continuously work to improve our applications and introduce new ideas that can make a positive impact on education and daily living.</p>
+                    <br>
+                    <p style="text-align: center; font-weight: bold; color: var(--c-golden);">APNA ADDA – Technology for Everyday Growth.</p>
+                </div>
+                <div class="social-row">
+                    <a href="https://t.me/apnaadda_official" target="_blank" class="btn-social social-tg">
+                        <i class="fab fa-telegram-plane"></i> Telegram Channel
+                    </a>
+                    <a href="https://whatsapp.com/channel/0029Vb7K9Ms3gvWeXnfpLy3x" target="_blank" class="btn-social social-wa">
+                        <i class="fab fa-whatsapp"></i> WhatsApp Channel
+                    </a>
+                    <a href="mailto:thepremanshu@gmail.com" class="btn-social social-em">
+                        <i class="fas fa-envelope"></i> Email Us
+                    </a>
+                </div>
+            </div>
+        </div>
     </section>
 
     <!-- Auth Page -->
@@ -426,16 +590,62 @@
             </div>
             <p id="auth-error" style="color: var(--c-red); margin-top: 20px; font-weight:bold; min-height:20px;"></p>
         </div>
-        <footer>
-            <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a></p>
-        </footer>
     </section>
 
-    <!-- Modal -->
+    <!-- Footer -->
+    <footer>
+        <p>THIS WEB IS POWERED BY <a href="https://apnaaddatech.github.io/Official_/" target="_blank">APNA ADDA</a> | <a onclick="router('about')" style="margin-left:5px;">ABOUT US</a></p>
+    </footer>
+
+    <!-- Video Modal -->
     <div class="video-modal" id="video-modal">
         <div class="close-modal" onclick="closeModal()">&times;</div>
         <div class="video-wrapper">
             <iframe id="video-frame" width="100%" height="100%" src="" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </div>
+    </div>
+
+    <!-- PROFILE MODAL (Dashboard) -->
+    <div class="video-modal" id="profile-modal">
+        <div class="profile-wrapper">
+            <div class="profile-header">
+                <div class="user-email" id="profile-email"><i class="fas fa-user-circle"></i> User</div>
+                <i class="fas fa-times profile-close" onclick="closeProfileModal()"></i>
+            </div>
+            
+            <!-- Tab Navigation -->
+            <div class="profile-tabs-container">
+                <button class="profile-tab active" onclick="switchProfileTab('completed', this)">Completed</button>
+                <button class="profile-tab" onclick="switchProfileTab('history', this)">History</button>
+                <div class="profile-slider" id="profile-slider"></div>
+            </div>
+            
+            <div class="profile-content">
+                <!-- COMPLETED TAB -->
+                <div id="prof-content-completed" class="profile-tab-content active">
+                    <div id="completed-container" class="item-list"></div>
+                </div>
+
+                <!-- HISTORY TAB -->
+                <div id="prof-content-history" class="profile-tab-content">
+                    <div id="history-container" class="item-list"></div>
+                </div>
+            </div>
+
+            <!-- PROFILE FOOTER -->
+            <div class="profile-footer">
+                <button class="btn-logout-animated" onclick="handleLogout()">LOGOUT</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- CUSTOM ALERT / CONFIRM MODAL -->
+    <div id="custom-ui" class="custom-overlay">
+        <div id="custom-box" class="custom-box">
+            <div id="custom-icon" class="custom-icon"><i class="fas fa-info-circle"></i></div>
+            <div id="custom-title" class="custom-title">Notification</div>
+            <div id="custom-msg" class="custom-msg">Message goes here...</div>
+            <div class="custom-btns" id="custom-btns"></div>
         </div>
     </div>
 
@@ -461,54 +671,87 @@
 
         let currentUser = null;
         let allVideosData = [];
+        let completedVideos = new Set();
+        let historyData = []; // Array of { key, timestamp }
         let isFirstLoad = true;
 
-        // --- Tabs Logic (With Sliding Effect) ---
-        window.switchTab = (context, subject, btn) => {
-            // context = 'home' OR 'all'
-            // subject = 'All', 'Physics', 'Chemistry', 'Maths'
-            const container = document.getElementById(`${context}-tabs-container`);
-            
-            // Safety check
-            if(!container) {
-                console.error(`Tab container not found for context: ${context}`);
-                return;
+        const TEN_DAYS_MS = 10 * 24 * 60 * 60 * 1000; 
+
+        /* --- Custom UI System --- */
+        const uiOverlay = document.getElementById('custom-ui');
+        const uiBox = document.getElementById('custom-box');
+        const uiTitle = document.getElementById('custom-title');
+        const uiMsg = document.getElementById('custom-msg');
+        const uiBtns = document.getElementById('custom-btns');
+        const uiIcon = document.getElementById('custom-icon');
+
+        window.showModal = (title, message, type = 'info', callback = null) => {
+            uiOverlay.classList.add('open');
+            uiTitle.innerText = title;
+            uiMsg.innerText = message;
+            uiBtns.innerHTML = '';
+            uiBox.className = 'custom-box ' + type;
+
+            let iconHtml = '<i class="fas fa-info-circle"></i>';
+            if(type === 'warning') iconHtml = '<i class="fas fa-exclamation-triangle"></i>';
+            if(type === 'success') iconHtml = '<i class="fas fa-check-circle"></i>';
+            uiIcon.innerHTML = iconHtml;
+
+            if (callback) {
+                const btnYes = document.createElement('button');
+                btnYes.className = 'c-btn c-btn-ok';
+                btnYes.innerText = 'CONFIRM';
+                btnYes.onclick = () => { closeCustomUI(); callback(true); };
+                const btnNo = document.createElement('button');
+                btnNo.className = 'c-btn c-btn-cancel';
+                btnNo.innerText = 'CANCEL';
+                btnNo.onclick = () => { closeCustomUI(); callback(false); };
+                uiBtns.appendChild(btnNo);
+                uiBtns.appendChild(btnYes);
+            } else {
+                const btnOk = document.createElement('button');
+                btnOk.className = 'c-btn c-btn-ok';
+                btnOk.innerText = 'OKAY';
+                btnOk.onclick = () => { closeCustomUI(); };
+                uiBtns.appendChild(btnOk);
             }
+        };
+        function closeCustomUI() { uiOverlay.classList.remove('open'); }
 
+        /* --- Tabs Logic (Main & Profile) --- */
+        window.switchTab = (context, subject, btn) => {
+            const container = document.getElementById(`${context}-tabs-container`);
+            if(!container) return;
             const slider = document.getElementById(`${context}-slider`);
-            
-            // Remove active class from all buttons in this container
             container.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-            
-            // Add active class to clicked button
             btn.classList.add('active');
+            if(slider) { slider.style.width = `${btn.offsetWidth}px`; slider.style.left = `${btn.offsetLeft}px`; }
+            ['all', 'physics', 'chemistry', 'maths'].forEach(g => {
+                const el = document.getElementById(`${context}-${g}`);
+                if(el) el.classList.remove('active');
+            });
+            const targetId = `${context}-${subject.toLowerCase()}`;
+            const targetGrid = document.getElementById(targetId);
+            if(targetGrid) targetGrid.classList.add('active');
+        };
 
+        window.switchProfileTab = (tabName, btn) => {
+            // Remove active from all tabs
+            document.querySelectorAll('.profile-tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.profile-tab-content').forEach(c => c.classList.remove('active'));
+            
+            // Activate current
+            btn.classList.add('active');
+            document.getElementById(`prof-content-${tabName}`).classList.add('active');
+            
             // Move Slider
+            const slider = document.getElementById('profile-slider');
             if(slider) {
                 slider.style.width = `${btn.offsetWidth}px`;
                 slider.style.left = `${btn.offsetLeft}px`;
             }
-
-            // --- FILTERING LOGIC ---
-            // 1. Hide all 4 potential grids for this context
-            const grids = ['all', 'physics', 'chemistry', 'maths'];
-            grids.forEach(g => {
-                const el = document.getElementById(`${context}-${g}`);
-                if(el) el.classList.remove('active');
-            });
-
-            // 2. Show the selected specific grid
-            // e.g., id="all-physics" or "home-all"
-            const targetId = `${context}-${subject.toLowerCase()}`;
-            const targetGrid = document.getElementById(targetId);
-            if(targetGrid) {
-                targetGrid.classList.add('active');
-            } else {
-                console.error(`Target grid not found: ${targetId}`);
-            }
         };
 
-        // Initialize sliders position
         function initTabs() {
             ['home', 'all'].forEach(ctx => {
                 const container = document.getElementById(`${ctx}-tabs-container`);
@@ -524,36 +767,59 @@
         }
         window.addEventListener('resize', initTabs);
 
-        // --- Auth Logic ---
+        /* --- Auth Logic --- */
         onAuthStateChanged(auth, (user) => {
             currentUser = user;
             const navLogin = document.getElementById('nav-login');
-            const navLogout = document.getElementById('nav-logout');
+            const navProfile = document.getElementById('nav-profile');
             const navAdmin = document.getElementById('nav-admin');
 
             if (user) {
                 navLogin.style.display = 'none';
-                navLogout.style.display = 'inline-block';
-                if (user.email === 'thepremanshu@gmail.com') {
-                    navAdmin.style.display = 'inline-block';
-                } else {
-                    navAdmin.style.display = 'none';
-                }
+                navProfile.style.display = 'inline-block';
+                navAdmin.style.display = (user.email === 'thepremanshu@gmail.com') ? 'inline-block' : 'none';
+                
+                // Fetch User Data (Completed)
+                onValue(ref(db, `users/${user.uid}/completed`), (snapshot) => {
+                    completedVideos.clear();
+                    const data = snapshot.val();
+                    if(data) Object.keys(data).forEach(k => completedVideos.add(k));
+                    renderAllCards();
+                    if(document.getElementById('profile-modal').classList.contains('show')) renderProfileContent();
+                });
+
+                // Fetch User Data (History)
+                onValue(ref(db, `users/${user.uid}/history`), (snapshot) => {
+                    historyData = [];
+                    const data = snapshot.val();
+                    if(data) {
+                        const now = Date.now();
+                        Object.keys(data).forEach(key => {
+                            const entry = data[key];
+                            // Clean up old history (> 10 days)
+                            if (now - entry.timestamp > TEN_DAYS_MS) {
+                                remove(ref(db, `users/${user.uid}/history/${key}`));
+                            } else {
+                                historyData.push({ key: key, timestamp: entry.timestamp });
+                            }
+                        });
+                        // Sort by newest
+                        historyData.sort((a,b) => b.timestamp - a.timestamp);
+                    }
+                    if(document.getElementById('profile-modal').classList.contains('show')) renderProfileContent();
+                });
+
             } else {
                 navLogin.style.display = 'inline-block';
-                navLogout.style.display = 'none';
+                navProfile.style.display = 'none';
                 navAdmin.style.display = 'none';
+                completedVideos.clear();
+                historyData = [];
+                renderAllCards();
             }
 
             if (isFirstLoad) {
-                const lastPage = localStorage.getItem('lastPage') || 'home';
-                if (lastPage === 'admin' && (!user || user.email !== 'thepremanshu@gmail.com')) {
-                    router('home');
-                } else if (lastPage === 'login' && user) {
-                    router('home');
-                } else {
-                    router(lastPage);
-                }
+                router('home'); 
                 isFirstLoad = false;
                 setTimeout(initTabs, 500); 
             }
@@ -575,6 +841,7 @@
                     document.getElementById('login-email').value = "";
                     document.getElementById('login-password').value = "";
                     router('home');
+                    window.showModal("Success", "Welcome back!", "success");
                 })
                 .catch(err => document.getElementById('auth-error').innerText = err.message);
         };
@@ -586,37 +853,123 @@
                 .then(() => {
                     document.getElementById('signup-email').value = "";
                     document.getElementById('signup-password').value = "";
-                    alert("Account Created Successfully!");
+                    window.showModal("Success", "Account created successfully!", "success");
                     router('home');
                 })
                 .catch(err => document.getElementById('auth-error').innerText = err.message);
         };
 
         window.handleLogout = () => {
-            if(confirm("Are you sure you want to logout?")) {
-                signOut(auth).then(() => router('home'));
-            }
+            window.showModal("Logout", "Are you sure you want to log out?", "info", (yes) => {
+                if(yes) {
+                    closeProfileModal();
+                    signOut(auth).then(() => router('home'));
+                }
+            });
         };
 
-        // --- Admin Logic ---
+        /* --- Profile Logic --- */
+        window.openProfileModal = () => {
+            document.getElementById('profile-email').innerHTML = `<i class="fas fa-user-circle"></i> ${currentUser ? currentUser.email : 'User'}`;
+            document.getElementById('profile-modal').classList.add('show');
+            
+            // Initialize Slider Position (Wait for render)
+            setTimeout(() => {
+               const activeBtn = document.querySelector('.profile-tab.active');
+               if(activeBtn) switchProfileTab('completed', activeBtn);
+            }, 50);
+
+            renderProfileContent();
+        };
+
+        window.closeProfileModal = () => {
+            document.getElementById('profile-modal').classList.remove('show');
+        };
+
+        function renderProfileContent() {
+            const compContainer = document.getElementById('completed-container');
+            const histContainer = document.getElementById('history-container');
+            compContainer.innerHTML = "";
+            histContainer.innerHTML = "";
+
+            // 1. Render Completed
+            const userCompVids = allVideosData.filter(v => completedVideos.has(v.key));
+            if(userCompVids.length === 0) {
+                compContainer.innerHTML = `<p style="color:#555; font-style:italic; padding-left:10px;">No completed videos.</p>`;
+            } else {
+                userCompVids.forEach(vid => {
+                    compContainer.innerHTML += `
+                        <div class="profile-item">
+                            <img src="${vid.thumbnail}" class="prof-thumb" onclick="attemptWatch('${vid.videoId}', '${vid.key}')">
+                            <div class="prof-info">
+                                <div class="prof-title" onclick="attemptWatch('${vid.videoId}', '${vid.key}')">${vid.title}</div>
+                                <div class="prof-meta">${vid.subject}</div>
+                            </div>
+                            <div class="prof-actions">
+                                <button class="btn-prof-action btn-play-mini" onclick="attemptWatch('${vid.videoId}', '${vid.key}')">
+                                    <i class="fas fa-play"></i> Watch
+                                </button>
+                                <button class="btn-prof-action btn-mark-mini" onclick="unmarkVideo('${vid.key}')" title="Unmark as complete">
+                                    <i class="fas fa-check-circle"></i>
+                                </button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+
+            // 2. Render History
+            if(historyData.length === 0) {
+                histContainer.innerHTML = `<p style="color:#555; font-style:italic; padding-left:10px;">No watch history recently.</p>`;
+            } else {
+                historyData.forEach(item => {
+                    const vid = allVideosData.find(v => v.key === item.key);
+                    if(vid) {
+                        const dateStr = new Date(item.timestamp).toLocaleDateString();
+                        histContainer.innerHTML += `
+                            <div class="profile-item">
+                                <img src="${vid.thumbnail}" class="prof-thumb" onclick="attemptWatch('${vid.videoId}', '${vid.key}')">
+                                <div class="prof-info">
+                                    <div class="prof-title" onclick="attemptWatch('${vid.videoId}', '${vid.key}')">${vid.title}</div>
+                                    <div class="prof-meta"><i class="far fa-clock"></i> Watched on ${dateStr}</div>
+                                </div>
+                                <div class="prof-actions">
+                                    <button class="btn-prof-action btn-play-mini" onclick="attemptWatch('${vid.videoId}', '${vid.key}')">
+                                        <i class="fas fa-play"></i> Watch
+                                    </button>
+                                </div>
+                            </div>
+                        `;
+                    }
+                });
+            }
+        }
+
+        window.unmarkVideo = (key) => {
+            window.showModal("Unmark Video", "Do you really want to unmark this video as incomplete?", "warning", (yes) => {
+                if(yes) {
+                    remove(ref(db, `users/${currentUser.uid}/completed/${key}`));
+                }
+            });
+        };
+
+        /* --- Admin Logic --- */
         function getYouTubeID(url) {
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
-            const match = url.match(regExp);
+            const match = url.match(/^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/);
             return (match && match[2].length === 11) ? match[2] : null;
         }
 
         window.saveVideo = () => {
             if(!currentUser || currentUser.email !== 'thepremanshu@gmail.com') return;
-
             const subject = document.getElementById('admin-subject').value;
             const title = document.getElementById('admin-title').value;
             const link = document.getElementById('admin-link').value;
             const notes = document.getElementById('admin-notes').value;
             const editKey = document.getElementById('edit-key').value;
 
-            if(!title || !link) { alert("Please fill Title and Video Link"); return; }
+            if(!title || !link) { window.showModal("Missing Info", "Please fill Title and Video Link", "warning"); return; }
             const videoId = getYouTubeID(link);
-            if(!videoId) { alert("Invalid YouTube Link"); return; }
+            if(!videoId) { window.showModal("Error", "Invalid YouTube Link", "warning"); return; }
 
             const thumbUrl = `https://img.youtube.com/vi/${videoId}/hqdefault.jpg`;
             const videoData = {
@@ -625,17 +978,19 @@
             };
 
             const actionName = editKey ? "Update" : "Upload";
-            if(!confirm(`Confirm ${actionName} for: ${title} in ${subject}?`)) return;
-
-            if (editKey) {
-                update(ref(db, 'videos/' + editKey), videoData)
-                    .then(() => { alert("Video Updated!"); resetAdminForm(); })
-                    .catch(err => alert(err.message));
-            } else {
-                push(ref(db, 'videos'), videoData)
-                    .then(() => { alert("Video Uploaded!"); resetAdminForm(); })
-                    .catch(err => alert(err.message));
-            }
+            window.showModal("Confirm Action", `Confirm ${actionName} for: ${title}?`, "info", (yes) => {
+                if(yes) {
+                    if (editKey) {
+                        update(ref(db, 'videos/' + editKey), videoData)
+                            .then(() => { window.showModal("Success", "Video Updated!", "success"); resetAdminForm(); })
+                            .catch(err => alert(err.message));
+                    } else {
+                        push(ref(db, 'videos'), videoData)
+                            .then(() => { window.showModal("Success", "Video Uploaded!", "success"); resetAdminForm(); })
+                            .catch(err => alert(err.message));
+                    }
+                }
+            });
         };
 
         window.editVideo = (key) => {
@@ -653,11 +1008,9 @@
         };
 
         window.deleteVideo = (key) => {
-            if(confirm("WARNING: Delete this video permanently?")) {
-                remove(ref(db, 'videos/' + key))
-                    .then(() => alert("Video Deleted"))
-                    .catch(err => alert(err.message));
-            }
+            window.showModal("Delete Video", "WARNING: This cannot be undone. Delete this video?", "warning", (yes) => {
+                if(yes) remove(ref(db, 'videos/' + key)).then(() => window.showModal("Deleted", "Video removed.", "info"));
+            });
         };
 
         window.resetAdminForm = () => {
@@ -671,115 +1024,163 @@
             document.getElementById('btn-cancel').style.display = "none";
         };
 
-        // --- Data Fetching ---
+        /* --- Data Fetching & Rendering --- */
         const videosRef = ref(db, 'videos');
         onValue(videosRef, (snapshot) => {
             const data = snapshot.val();
             const adminList = document.getElementById('admin-video-list');
             
-            // Clear contents
-            ['home', 'all'].forEach(prefix => {
-                ['all', 'physics', 'chemistry', 'maths'].forEach(sub => {
-                    const el = document.getElementById(`${prefix}-${sub}`);
-                    if(el) el.innerHTML = "";
-                });
-            });
-            adminList.innerHTML = "";
             allVideosData = [];
-
             if (data) {
                 Object.keys(data).forEach(key => { allVideosData.push({ key: key, ...data[key] }); });
-                allVideosData.reverse(); // Newest first
+                allVideosData.reverse(); 
 
-                const subjects = { Physics: [], Chemistry: [], Maths: [] };
-                
+                // Render Admin List
+                adminList.innerHTML = "";
                 allVideosData.forEach(vid => {
-                    const sub = vid.subject || "Physics";
-                    // Map items to subjects. Using direct key access.
-                    if(subjects[sub]) {
-                        subjects[sub].push(vid);
-                    }
-                    
-                    // Admin Item
                     adminList.innerHTML += `
                         <div class="admin-video-item">
                             <div style="flex:1;">
-                                <span style="color:var(--c-golden); font-size:0.8rem; display:block;">${sub.toUpperCase()}</span>
+                                <span style="color:var(--c-golden); font-size:0.8rem; display:block;">${vid.subject}</span>
                                 <span style="color:white; font-weight:bold;">${vid.title}</span>
                             </div>
                             <div class="admin-actions">
                                 <button style="background:var(--c-blue)" onclick="editVideo('${vid.key}')"><i class="fas fa-edit"></i></button>
                                 <button style="background:var(--c-red)" onclick="deleteVideo('${vid.key}')"><i class="fas fa-trash"></i></button>
                             </div>
-                        </div>
-                    `;
+                        </div>`;
                 });
-
-                // Populate 'All' tabs
-                const homeAll = document.getElementById('home-all');
-                const allAll = document.getElementById('all-all');
                 
-                // Videos Page 'All' -> Show everything
-                allVideosData.forEach(v => allAll.innerHTML += createCard(v));
-                
-                // Home Page 'All' -> Show latest 8 mixed
-                allVideosData.slice(0, 8).forEach(v => homeAll.innerHTML += createCard(v));
-
-                // Populate Subject tabs
-                ['Physics', 'Chemistry', 'Maths'].forEach(subName => {
-                    const idName = subName.toLowerCase();
-                    const vids = subjects[subName];
-                    const homeContainer = document.getElementById(`home-${idName}`);
-                    const allContainer = document.getElementById(`all-${idName}`);
-
-                    if(vids.length === 0) {
-                        const empty = `<p style="color:grey; padding:10px;">No videos uploaded yet.</p>`;
-                        homeContainer.innerHTML = empty;
-                        allContainer.innerHTML = empty;
-                    } else {
-                        vids.forEach(v => allContainer.innerHTML += createCard(v));
-                        vids.slice(0, 4).forEach(v => homeContainer.innerHTML += createCard(v));
-                    }
-                });
+                renderAllCards();
                 initSlideshow();
-                // Re-initialize tabs to make sure slider is under 'All' correctly
                 setTimeout(initTabs, 100);
             } else {
                 adminList.innerHTML = "<p style='color:grey'>No content found.</p>";
             }
         });
 
+        function renderAllCards() {
+            // Clear all grids
+            ['home', 'all'].forEach(prefix => {
+                ['all', 'physics', 'chemistry', 'maths'].forEach(sub => {
+                    const el = document.getElementById(`${prefix}-${sub}`);
+                    if(el) el.innerHTML = "";
+                });
+            });
+
+            // Distribute Cards
+            const subjects = { Physics: [], Chemistry: [], Maths: [] };
+            
+            allVideosData.forEach(vid => {
+                const sub = vid.subject || "Physics";
+                if(subjects[sub]) subjects[sub].push(vid);
+            });
+
+            const homeAll = document.getElementById('home-all');
+            const allAll = document.getElementById('all-all');
+
+            allVideosData.forEach(v => allAll.innerHTML += createCard(v));
+            allVideosData.slice(0, 8).forEach(v => homeAll.innerHTML += createCard(v));
+
+            ['Physics', 'Chemistry', 'Maths'].forEach(subName => {
+                const idName = subName.toLowerCase();
+                const vids = subjects[subName];
+                const homeContainer = document.getElementById(`home-${idName}`);
+                const allContainer = document.getElementById(`all-${idName}`);
+
+                if(vids.length === 0) {
+                    const empty = `<p style="color:grey; padding:10px;">No videos uploaded yet.</p>`;
+                    homeContainer.innerHTML = empty;
+                    allContainer.innerHTML = empty;
+                } else {
+                    vids.forEach(v => allContainer.innerHTML += createCard(v));
+                    vids.slice(0, 4).forEach(v => homeContainer.innerHTML += createCard(v));
+                }
+            });
+        }
+
         function createCard(vid) {
             const safeNotes = vid.notesUrl ? vid.notesUrl.replace(/'/g, "&apos;") : "";
+            const isCompleted = completedVideos.has(vid.key);
+            const checkClass = isCompleted ? 'completed' : '';
+            const checkText = isCompleted ? 'COMPLETED' : 'MARK DONE';
+            const checkIcon = isCompleted ? 'fa-check-circle' : 'fa-check';
+
             return `
                 <div class="video-card">
                     <div class="thumbnail-container">
                         <img src="${vid.thumbnail}" class="thumbnail" alt="Thumb">
-                        <div class="play-overlay" onclick="attemptWatch('${vid.videoId}')">
+                        <div class="play-overlay" onclick="attemptWatch('${vid.videoId}', '${vid.key}')">
                             <i class="fas fa-play-circle"></i>
                         </div>
                     </div>
                     <div class="card-body">
                         <div class="card-title" title="${vid.title}">${vid.title}</div>
                         <div class="card-actions">
-                            <button class="btn-card btn-watch shine-btn" onclick="attemptWatch('${vid.videoId}')"><i class="fas fa-play"></i> WATCH</button>
+                            <button class="btn-card btn-watch shine-btn" onclick="attemptWatch('${vid.videoId}', '${vid.key}')"><i class="fas fa-play"></i> WATCH</button>
                             <button class="btn-card btn-notes shine-btn" onclick="attemptNotes('${safeNotes}')"><i class="fas fa-file-pdf"></i> NOTES</button>
+                            <button class="btn-card btn-check ${checkClass}" onclick="toggleComplete('${vid.key}')">
+                                <i class="fas ${checkIcon}"></i> ${checkText}
+                            </button>
                         </div>
                     </div>
                 </div>
             `;
         }
 
-        window.attemptWatch = (videoId) => {
-            if (!currentUser) { if(confirm("Authentication Required. Please Login to Watch.")) router('login'); return; }
+        window.toggleComplete = (videoKey) => {
+            if (!currentUser) {
+                window.showModal("Login Required", "Please login to track your progress.", "info", (yes) => { if(yes) router('login'); });
+                return;
+            }
+
+            const userCompRef = ref(db, `users/${currentUser.uid}/completed/${videoKey}`);
+            
+            if (completedVideos.has(videoKey)) {
+                // UNMARK LOGIC (Triggered from Card)
+                window.showModal("Unmark Video", "Do you want to unmark this video?", "warning", (yes) => {
+                    if(yes) remove(userCompRef);
+                });
+            } else {
+                // Mark
+                set(userCompRef, true); 
+            }
+        };
+
+        // Updated attemptWatch to close profile and include History logic
+        window.attemptWatch = (videoId, key) => {
+            if (!currentUser) { 
+                window.showModal("Access Denied", "You must be logged in to watch videos.", "info", (yes) => { if(yes) router('login'); });
+                return; 
+            }
+
+            // Save to History
+            if(key) {
+                set(ref(db, `users/${currentUser.uid}/history/${key}`), { timestamp: Date.now() });
+            }
+
+            // INSTANTLY CLOSE PROFILE MODAL IF OPEN
+            const profileModal = document.getElementById('profile-modal');
+            if(profileModal.classList.contains('show')) {
+                profileModal.classList.remove('show');
+            }
+
             document.getElementById('video-frame').src = `https://www.youtube.com/embed/${videoId}?autoplay=1`;
             document.getElementById('video-modal').classList.add('show');
         };
 
         window.attemptNotes = (url) => {
-            if (!currentUser) { if(confirm("Authentication Required. Please Login to view Notes.")) router('login'); return; }
-            if (!url || url.trim() === "") { alert("Notes are not currently available for this lecture."); }
-            else { window.open(url, '_blank'); }
+            if (!currentUser) { 
+                window.showModal("Access Denied", "You must be logged in to view notes.", "info", (yes) => { if(yes) router('login'); });
+                return; 
+            }
+            if (!url || url.trim() === "") { 
+                window.showModal("Content Unavailable", "Notes are currently not uploaded for this video.", "warning");
+            }
+            else { 
+                // Using window.open with _blank standardizes deep linking for Universal Links (Android/iOS)
+                window.open(url, '_blank'); 
+            }
         };
 
         window.closeModal = () => {
@@ -803,24 +1204,23 @@
         }
 
         window.router = (page) => {
-            localStorage.setItem('lastPage', page);
             if (page === 'admin' && (!currentUser || currentUser.email !== 'thepremanshu@gmail.com')) {
-                alert("Access Denied: Admin privileges required."); router('home'); return;
+                window.showModal("Security", "Access Denied: Admin privileges required.", "warning");
+                router('home'); 
+                return;
             }
             document.querySelectorAll('.section').forEach(sec => sec.classList.remove('active'));
             if (page === 'home') document.getElementById('home-page').classList.add('active');
             if (page === 'videos') {
                 document.getElementById('videos-page').classList.add('active');
-                // Force recalculate tabs because the section just became visible
                 setTimeout(initTabs, 50);
             }
+            if (page === 'about') document.getElementById('about-page').classList.add('active');
             if (page === 'login') document.getElementById('login-page').classList.add('active');
             if (page === 'admin') document.getElementById('admin-page').classList.add('active');
             window.scrollTo(0, 0);
-            
-            // Fallback for other pages
             setTimeout(initTabs, 100);
         };
     </script>
 </body>
-</html>
+                            </html>
